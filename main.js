@@ -1,55 +1,12 @@
-const form = document.getElementById('form-atividade')
-const atividades = []
-const notas = []
-const notaMinima = parseFloat(prompt("Digita a nota mínima: "))
+const form = document.querySelector('form');
+const accountInput = form.querySelector('input[type="number"]:first-of-type');
+const valueInput = form.querySelector('input[type="number"]:last-of-type');
 
-let linhas = ""
-form.addEventListener('submit', function(e){
-    e.preventDefault()
-
-    adicionaLinha()
-    atualizaTabela()
-    atualizaMediaFinal()
-})
-
-function adicionaLinha() {
-    const inputNomeAtividade = document.getElementById('nome-atividade');
-    const inputNotaAtividade = document.getElementById('nota-atividade');
-
-    if (atividades.includes(inputNomeAtividade.value)) {
-        alert(`A atividade: ${inputNomeAtividade.value} já foi inserida.`)
+form.addEventListener('submit', function(event) {
+    if (parseInt(valueInput.value) <= parseInt(accountInput.value)) {
+    event.preventDefault();
+    alert('O segundo valor precisa ser maior que o primeiro.');
     } else {
-        atividades.push(inputNomeAtividade.value)
-        notas.push(parseFloat(inputNotaAtividade.value))
-    
-        let linha = '<tr>'
-        linha += `<td>${inputNomeAtividade.value}</td>`
-        linha += `<td>${inputNotaAtividade.value}</td>`
-        linha += `<td>${inputNotaAtividade.value >= notaMinima ? 'Aprovado' : 'Reprovado'}</td>`
-        linha += `</tr>`
-        
-        linhas += linha
+    alert('Formulário enviado com sucesso!');
     }
-    
-    inputNomeAtividade.value = ""
-    inputNotaAtividade.value = ""
-}
-
-function atualizaTabela() {
-    const corpoTabela = document.querySelector(`tbody`)
-    corpoTabela.innerHTML = linhas
-}
-
-function atualizaMediaFinal () {
-    const mediaFinal = calculaMediaFinal()
-    document.getElementById('media-final-valor').innerHTML = mediaFinal.toFixed(2)
-    document.getElementById('media-final-resultado').innerHTML = mediaFinal >= notaMinima ? 'Aprovado' : 'Reprovado'
-}
-
-function calculaMediaFinal() {
-    let somaDasNotas = 0
-    for (let i = 0; i < notas.length; i++) {
-        somaDasNotas += notas[i]
-    }
-    return somaDasNotas / notas.length
-}
+});
